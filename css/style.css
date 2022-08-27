@@ -1,0 +1,55 @@
+*{ box-sizing: border-box; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif }
+:root {
+    --main_color:#2C3639;
+    --color_one: #3F4E4F;
+    --color_two: #A27B5C;
+    --color_three: #DCD7C9;
+}
+body{ margin: 0; padding: 0; background-color:var(--main_color); position: relative; }
+
+h1{ color: var(--color_two); text-align: center; }
+
+.tasks_container{
+    width: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 5px 5%;
+}
+
+.tasks{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 250px);
+    justify-content: center;
+    gap: 15px;
+}
+
+.task{ background-color: var(--color_three); padding: 10px }
+.task h3{ margin: 0; color: var(--color_two); pointer-events: none; }
+.task p{ color: var(--color_one); margin-top: 5px; pointer-events: none; }
+
+#addTask{
+    background-color: var(--color_two);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity linear .3s;
+}
+#addTask:hover{ opacity: 1 }
+
+.modalWindow{
+   background-color: #A27B5C;
+   position: fixed;
+   top: 132px;
+   left: 442px;
+   display: none;
+}
+.form_modalWindow form input, .form_modalWindow form textarea{ outline:none; resize: none }
+
+
+
+@media (max-width:600px) {
+    .tasks{ grid-template-columns: 1fr; }
+}
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/934826e832.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1>TO-DO LIST</h1>
+
+    <div class="tasks_container">
+        <div class="tasks">
+            <!-- USAR addAdjacentElement (afterBegin) para colocar las tareas primero y luego que este el add -->
+            <div class="task">
+                <h3>Nombre</h3>
+                <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
+            <div class="task">
+                <h3>Novvvvvmbre</h3>
+                <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
+            <div class="task">
+                <h3>Nombrcccccccccccccccccccccce</h3>
+                <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
+            
+            <div id="addTask">
+                <div class="icon_addTask">
+                    <i></i>
+                    <i></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modalWindow">
+        <div class="form_modalWindow">
+            <form>
+                <div class="inputContent">
+                    <label for="title_input">Titulo</label>
+                    <input type="text" name="title" id="title_input">
+                </div>
+                <div class="inputContent">
+                    <label for="description_input">Descripcion</label>
+                    <textarea name="description" id="description_input" cols="30" rows="5"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="js/script.js" type="module"></script>
+</body>
+</html>
