@@ -7,7 +7,7 @@
     <script src="https://kit.fontawesome.com/934826e832.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <title>To-Do List</title>
 </head>
 <body>
     
@@ -16,17 +16,29 @@
     <div class="tasks_container">
         <div class="tasks">
             <!-- USAR addAdjacentElement (afterBegin) para colocar las tareas primero y luego que este el add -->
-            <div class="task">
+            <div class="task" id="1">
                 <h3>Nombre</h3>
                 <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <div class="taskOptions">
+                    <i class="fa-solid fa-pen-to-square taskEditButton"></i>
+                    <i class="fa-solid fa-trash-can taskDeleteButton"></i>
+                </div>
             </div>
-            <div class="task">
+            <div class="task" id="2">
                 <h3>Novvvvvmbre</h3>
                 <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <div class="taskOptions">
+                    <i class="fa-solid fa-pen-to-square taskEditButton"></i>
+                    <i class="fa-solid fa-trash-can taskDeleteButton"></i>
+                </div>
             </div>
             <div class="task">
                 <h3>Nombrcccccccccccccccccccccce</h3>
                 <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <div class="taskOptions">
+                    <i class="fa-solid fa-pen-to-square taskEditButton"></i>
+                    <i class="fa-solid fa-trash-can taskDeleteButton"></i>
+                </div>
             </div>
             
             <div id="addTask">
@@ -40,15 +52,20 @@
 
     <div class="modalWindow">
         <div class="form_modalWindow">
+            <div class="head_modalWindow">
+                <h3>AGREGAR TAREA</h3>
+                <i class="fa-solid fa-circle-xmark" id="exit_modalWindow"></i>
+            </div>
             <form>
                 <div class="inputContent">
-                    <label for="title_input">Titulo</label>
+                    <label for="title_input"><b>Titulo</b></label>
                     <input type="text" name="title" id="title_input">
                 </div>
                 <div class="inputContent">
-                    <label for="description_input">Descripcion</label>
+                    <label for="description_input"><b>Descripcion</b></label>
                     <textarea name="description" id="description_input" cols="30" rows="5"></textarea>
                 </div>
+                <input type="submit" value="AGREGAR" id="addTask_buttonForm">
             </form>
         </div>
     </div>

@@ -2,6 +2,7 @@
     position: relative;
     width: 100px;
     height: 100px;
+    pointer-events: none;
 }
 
 .icon_addTask i:nth-child(1), .icon_addTask i:nth-child(2){
