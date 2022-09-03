@@ -23,11 +23,16 @@ h1{ color: var(--color_two); text-align: center; }
     gap: 15px;
 }
 
-.task{ background-color: var(--color_three); padding: 10px }
-.task h3{ color: var(--color_two); pointer-events: none; width: 100%; overflow: hidden; }
-.task p{ color: var(--color_one); margin-top: 5px; pointer-events: none; }
+.task{ 
+    background-color: var(--color_three); 
+    padding: 10px;
+    display: grid;
+    grid-template-rows: 4;
+}
+.task h3{ color: var(--color_two); pointer-events: none; width: 100%; overflow: hidden;margin: 5px 0; }
+.task p{ color: var(--color_one); margin-top: 5px; pointer-events: none; align-items:center }
 
-.taskOptions{ display: flex; gap: 10px }
+.taskOptions{ display: flex; gap: 10px; grid-row:span 2; align-items:flex-end; }
 .taskOptions i{ font-size: 20px; cursor: pointer }
 
 #addTask{

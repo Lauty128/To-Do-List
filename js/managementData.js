@@ -1,19 +1,34 @@
-export { managementData }
+export { managementData, storage }
+
+let storage = localStorage;
 
 class managementData {
 
-    deleteData = storage =>{
-        //Clean Local Storage to remove unnecessary data and so avoid errors
-        storage.clear()
+    constructor(){
+        this.object = {
+            id:"",
+            title:"",
+            description:""
+        }
+        this.wordsValidation = {
+            title: 20,
+            description:100
+        }
     }
 
-    #validateContent = ()=>{             
-        // Checks that the div content hasn't been modified
-                                
-    }
+    getData = ()=> JSON.parse(storage.getItem("data"))
 
-    #useValidateData = ()=>{
-        
+    #validateContentToModify = ()=>{             
+        // Checks that the div content hasn't been modified                       
+        let data = this.getData()
+        let check = false;
+        let index=0;
+        if(data.length > 0){
+            //while(index < data.length && !check){     
+           // }
+            // console.log(data.filter(element => element.id == this.object.id ))
+        }else {console.log("No tiene nada")}
+        console.log(data.filter(element => element.id == this.object.id ))
     }
 
     deleteTasks_onScreen = ()=>{
@@ -21,7 +36,36 @@ class managementData {
     }
 
     printData = ()=>{
-        // Print the data stored in the local Storage
+        let addTaskButton = document.querySelector("#addTask")
+        let storedData = this.getData()
+        if(storedData.length > 0){
+            storedData.forEach(task=>{
+                let taskData = ` <div class="task" id="${task.id}">
+                <h3>${task.title}</h3>
+                <p class="description">${task.description}</p>
+                <div class="taskOptions">
+                    <i class="fa-solid fa-pen-to-square taskEditButton"></i>
+                    <i class="fa-solid fa-trash-can taskDeleteButton"></i>
+                </div>
+                `
+
+                addTaskButton.insertAdjacentHTML("beforebegin", taskData)
+            })
+
+            return
+        }
+        
+    }
+
+    resetScreen = ()=>{
+        document.querySelector(".tasks").innerHTML = `<div id="addTask">
+        <div class="icon_addTask">
+            <i></i>
+            <i></i>
+        </div>
+    </div>`
+        this.close_modalWindow()
+        this.printData()
     }
 
     open_modalWindow =()=>{
@@ -30,6 +74,7 @@ class managementData {
     }
 
     close_modalWindow = ()=>{
+        document.getElementById("id_input").value = "-1"
         document.querySelector(".form_modalWindow").classList.remove("form_modalWindow_open")
         setTimeout(()=>{
             document.querySelector(".modalWindow").classList.remove("modalWindow_open") 
@@ -46,11 +91,20 @@ class managementData {
         let descriptionTask = task.children[1].textContent
         document.getElementById("title_input").value = tittleTask
         document.getElementById("description_input").value = descriptionTask
+        document.getElementById("id_input").value = task.getAttribute("id")
         this.open_modalWindow()
     }
 
-    addTask = id=>{
-
+    addTask = ({ title, description })=>{
+        let storedData = this.getData()
+        //Takes the data and creates an object with it
+        this.object.id = storedData.length;
+        this.object.title = title
+        this.object.description = description
+        //Adds the created object to local storage
+        storedData.push(this.object)
+        storage.setItem("data", JSON.stringify(storedData))  
+        this.resetScreen()  
     }
 
     deleteTask = id=>{
