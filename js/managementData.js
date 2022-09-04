@@ -11,33 +11,22 @@ class managementData {
             description:""
         }
         this.wordsValidation = {
-            title: 20,
-            description:100
+            title: [5,20], // Regular Expression
+            description:[20, 80]  // Regular Expression
         }
     }
 
-    getData = ()=> JSON.parse(storage.getItem("data"))
+    #getData = ()=> JSON.parse(storage.getItem("data"))
 
-    #validateContentToModify = ()=>{             
-        // Checks that the div content hasn't been modified                       
-        let data = this.getData()
-        let check = false;
-        let index=0;
-        if(data.length > 0){
-            //while(index < data.length && !check){     
-           // }
-            // console.log(data.filter(element => element.id == this.object.id ))
-        }else {console.log("No tiene nada")}
-        console.log(data.filter(element => element.id == this.object.id ))
+    #changesContentToModify = ({id,title,description})=>{             
+        // Checks that the div content hasn't been modified
+        let storedTaskData = this.#getData().filter(element => element.id == id)
+        return  title == storedTaskData[0].title && description == storedTaskData[0].description ? false : true
     }
 
-    deleteTasks_onScreen = ()=>{
-        // Clean the screen to correctly execute the function "printData"
-    }
-
-    printData = ()=>{
+    #printData = ()=>{
         let addTaskButton = document.querySelector("#addTask")
-        let storedData = this.getData()
+        let storedData = this.#getData()
         if(storedData.length > 0){
             storedData.forEach(task=>{
                 let taskData = ` <div class="task" id="${task.id}">
@@ -48,24 +37,21 @@ class managementData {
                     <i class="fa-solid fa-trash-can taskDeleteButton"></i>
                 </div>
                 `
-
-                addTaskButton.insertAdjacentHTML("beforebegin", taskData)
+                addTaskButton.insertAdjacentHTML("afterend", taskData)
             })
-
-            return
-        }
-        
+        } 
     }
 
     resetScreen = ()=>{
-        document.querySelector(".tasks").innerHTML = `<div id="addTask">
-        <div class="icon_addTask">
-            <i></i>
-            <i></i>
-        </div>
-    </div>`
+        document.querySelector(".tasks").innerHTML = 
+        `<div id="addTask">
+            <div class="icon_addTask">
+                <i></i>
+                <i></i>
+            </div>
+        </div>`
         this.close_modalWindow()
-        this.printData()
+        this.#printData()
     }
 
     open_modalWindow =()=>{
@@ -96,23 +82,47 @@ class managementData {
     }
 
     addTask = ({ title, description })=>{
-        let storedData = this.getData()
+        let storedData = this.#getData()
         //Takes the data and creates an object with it
-        this.object.id = storedData.length;
+        this.object.id = storedData.length == 0 ? 0 : storedData[storedData.length - 1].id + 1;
         this.object.title = title
         this.object.description = description
         //Adds the created object to local storage
         storedData.push(this.object)
         storage.setItem("data", JSON.stringify(storedData))  
-        this.resetScreen()  
+        this.resetScreen()
     }
 
-    deleteTask = id=>{
+    deleteTask = ({ id,title,description })=>{
+        if(!this.#changesContentToModify({ id, title, description })){
+            let storedData = this.#getData()
+            // Removes all elements that match the id
+            storedData = storedData.filter((data=> data.id != id))
+            // Adds the new object to the Local Storage
+            storage.setItem("data", JSON.stringify(storedData))
+            this.resetScreen()
+        }
 
+        // Returns an error message
     }
 
-    modifyTask = id=>{
-
+    modifyTask = ({ id, title, description })=>{
+        //Checks that there is a change in the task
+        if(this.#changesContentToModify({ id, title, description }) /* &&  (Complys with the regular expression) */){
+            //console.log("Son distintos")
+            let storedData = this.#getData()
+            storedData.map((element=>{
+                if(element.id == id) {
+                    element.title = title
+                    element.description = description
+                }
+            }))
+            storage.setItem("data", JSON.stringify(storedData))
+            this.resetScreen()
+            return
+        }
+        //console.log("Son iguales")  **prints an error message
+        
     }
 
     
