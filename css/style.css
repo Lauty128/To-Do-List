@@ -96,6 +96,29 @@ h1{ color: var(--color_two); text-align: center; }
 .form_modalWindow_open{ transform: scale(1); }
 
 
+/* ---------------------- ERROR MESSAGE --------------------------------- */
+.errorMessage, .successMessage{
+    background-color: #d44865;
+    width: fit-content;
+    position: fixed;
+    bottom: 10px; 
+    right: 10px;
+    padding: 10px;
+    transform: translateX(400px);
+    opacity: 0.8;
+    transition: transform linear .5s;
+}
+.errorMessage{ background-color: #d44865 }
+.successMessage{ background-color: #b8da8d }
+
+.message_show{ transform: translateX(0);}
+
+@keyframes tiembla{
+    0%  { transform:rotateZ(-1deg); }
+    50% { transform:rotateZ( 0deg) scale(.9); }
+    100%{ transform:rotateZ( 1deg); }
+  }
+
 /* --------------------- MEDIA QUERIES ------------------------ */
 
 @media (max-width:600px) {

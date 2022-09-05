@@ -24,6 +24,8 @@ class managementData {
         return  title == storedTaskData[0].title && description == storedTaskData[0].description ? false : true
     }
 
+    //-------------------- ON-SCREEN DATA HANDLING
+
     #printData = ()=>{
         let addTaskButton = document.querySelector("#addTask")
         let storedData = this.#getData()
@@ -54,6 +56,15 @@ class managementData {
         this.#printData()
     }
 
+    printMessage = (message,type)=>{
+        // print error message with color and message sent
+        document.querySelector(type).firstElementChild.textContent = message
+        document.querySelector(type).classList.add("message_show")
+        setTimeout(()=>{ document.querySelector(type).classList.remove("message_show") }, 3000)
+    }
+
+    //-------------------------- MODAL WINDOW
+
     open_modalWindow =()=>{
         document.querySelector(".modalWindow").classList.add("modalWindow_open")
         setTimeout(()=>{ document.querySelector(".form_modalWindow").classList.add("form_modalWindow_open") }, 5)
@@ -81,6 +92,8 @@ class managementData {
         this.open_modalWindow()
     }
 
+    //-------------------------- ADD / DELETE / MODIFY
+
     addTask = ({ title, description })=>{
         let storedData = this.#getData()
         //Takes the data and creates an object with it
@@ -90,39 +103,56 @@ class managementData {
         //Adds the created object to local storage
         storedData.push(this.object)
         storage.setItem("data", JSON.stringify(storedData))  
+        this.printMessage("Tarea agregada correctamente", ".successMessage")
         this.resetScreen()
     }
 
     deleteTask = ({ id,title,description })=>{
-        if(!this.#changesContentToModify({ id, title, description })){
-            let storedData = this.#getData()
-            // Removes all elements that match the id
-            storedData = storedData.filter((data=> data.id != id))
-            // Adds the new object to the Local Storage
-            storage.setItem("data", JSON.stringify(storedData))
-            this.resetScreen()
+        try{
+            if(!this.#changesContentToModify({ id, title, description })){
+                let storedData = this.#getData()
+                // Removes all elements that match the id
+                storedData = storedData.filter((data=> data.id != id))
+                // Adds the new object to the Local Storage
+                storage.setItem("data", JSON.stringify(storedData))
+                this.printMessage("Tarea eliminada correctamente", ".successMessage")
+                this.resetScreen()
+                return
+            }
+            throw "error";
         }
-
-        // Returns an error message
+        catch{
+            // Returns an error message
+            this.printMessage("Ocurrio un error. Porfavor reinicie la pagina", ".errorMessage")
+        }
     }
 
     modifyTask = ({ id, title, description })=>{
         //Checks that there is a change in the task
-        if(this.#changesContentToModify({ id, title, description }) /* &&  (Complys with the regular expression) */){
-            //console.log("Son distintos")
-            let storedData = this.#getData()
-            storedData.map((element=>{
-                if(element.id == id) {
-                    element.title = title
-                    element.description = description
-                }
-            }))
-            storage.setItem("data", JSON.stringify(storedData))
-            this.resetScreen()
-            return
+        try{
+            if(this.#changesContentToModify({ id, title, description })){ 
+                // if there is error in #changesContentToModify, then it means that someone tried to modify the system 
+                let storedData = this.#getData()
+                storedData.map((element=>{
+                    if(element.id == id) {
+                        element.title = title
+                        element.description = description
+                    }
+                }))
+                storage.setItem("data", JSON.stringify(storedData))
+                this.printMessage("Tarea editada correctamente", ".successMessage")
+                this.resetScreen()
+                return   
+            }
+            // if there is no error in #changesContentTomodify and it is false, then it means that there is no change
+            throw "unchanged";
         }
-        //console.log("Son iguales")  **prints an error message
-        
+        catch(error){
+            let message = error == "unchanged" ? "No se ha realizado ningun cambio en la tarea" : "Ocurrio un error. Porfavor reinicie la pagina";
+            document.getElementById("addTask_buttonForm").style.animation = "tiembla 0.1s ease 0s 3"
+            setTimeout(()=>{ document.getElementById("addTask_buttonForm").style.animation = "" },300)
+            this.printMessage(message, ".errorMessage")
+        }
     }
 
     

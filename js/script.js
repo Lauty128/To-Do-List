@@ -5,8 +5,8 @@ let manage = new managementData()   // Gestor de LocalStorage
 
 
 // APRENDIENDO A USAR LOCALSTORAGE
-//storage.clear()   // Cleans Local Storage to avoid storage errors 
-//storage.setItem("data", "[]")
+storage.clear()   // Cleans Local Storage to avoid storage errors 
+storage.setItem("data", "[]")
 manage.resetScreen()
 
 document.querySelector(".modalWindow").addEventListener("click",e=>{
