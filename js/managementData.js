@@ -1,6 +1,15 @@
-export { managementData, storage }
+export { managementData, storage, styleValidateContentLength }
 
 let storage = localStorage;
+
+const styleValidateContentLength = (input, validate)=>{
+    // Checks that the tittle and description have the specified length
+    if(validate){  
+        document.getElementById(input).parentElement.classList.remove("lengthIsNotMet")
+        return
+    }
+    if(!document.getElementById(input).parentElement.classList.contains("lengthIsNotMet")) document.getElementById(input).parentElement.classList.add("lengthIsNotMet")
+}
 
 class managementData {
 
@@ -11,8 +20,8 @@ class managementData {
             description:""
         }
         this.wordsValidation = {
-            title: [5,20], // Regular Expression
-            description:[20, 80]  // Regular Expression
+            title: /^[a-zA-Z0-9 \-\_]{5,30}$/,
+            description:/^[a-zA-Z0-9 \-\_]{30,140}$/  
         }
     }
 
@@ -23,6 +32,8 @@ class managementData {
         let storedTaskData = this.#getData().filter(element => element.id == id)
         return  title == storedTaskData[0].title && description == storedTaskData[0].description ? false : true
     }
+
+    validateContentLength = ()=> this.wordsValidation.title.test(document.getElementById("title_input").value) && this.wordsValidation.description.test(document.getElementById("description_input").value)
 
     //-------------------- ON-SCREEN DATA HANDLING
 
@@ -77,8 +88,9 @@ class managementData {
             document.querySelector(".modalWindow").classList.remove("modalWindow_open") 
             document.getElementById("title_input").value = ""
             document.getElementById("description_input").value = ""
+            styleValidateContentLength("title_input", true)
+            styleValidateContentLength("description_input", true)
         }, 300)
-
     }
 
     open_modalWindow_toModify = icon =>{
@@ -97,14 +109,21 @@ class managementData {
     addTask = ({ title, description })=>{
         let storedData = this.#getData()
         //Takes the data and creates an object with it
-        this.object.id = storedData.length == 0 ? 0 : storedData[storedData.length - 1].id + 1;
-        this.object.title = title
-        this.object.description = description
-        //Adds the created object to local storage
-        storedData.push(this.object)
-        storage.setItem("data", JSON.stringify(storedData))  
-        this.printMessage("Tarea agregada correctamente", ".successMessage")
-        this.resetScreen()
+        if(this.validateContentLength()){
+            this.object.id = storedData.length == 0 ? 0 : storedData[storedData.length - 1].id + 1;
+            this.object.title = title
+            this.object.description = description
+            //Adds the created object to local storage
+            storedData.push(this.object)
+            storage.setItem("data", JSON.stringify(storedData))  
+            this.printMessage("Tarea agregada correctamente", ".successMessage")
+            this.resetScreen()
+        }
+        else{
+            document.getElementById("addTask_buttonForm").style.animation = "tiembla 0.1s ease 0s 3"
+            setTimeout(()=>{ document.getElementById("addTask_buttonForm").style.animation = "" },300)
+            this.printMessage("No se cumple con las casillas", ".errorMessage")
+        }
     }
 
     deleteTask = ({ id,title,description })=>{
@@ -130,6 +149,7 @@ class managementData {
     modifyTask = ({ id, title, description })=>{
         //Checks that there is a change in the task
         try{
+            if(!this.validateContentLength()) throw "content_invalid"
             if(this.#changesContentToModify({ id, title, description })){ 
                 // if there is error in #changesContentToModify, then it means that someone tried to modify the system 
                 let storedData = this.#getData()
@@ -148,7 +168,10 @@ class managementData {
             throw "unchanged";
         }
         catch(error){
-            let message = error == "unchanged" ? "No se ha realizado ningun cambio en la tarea" : "Ocurrio un error. Porfavor reinicie la pagina";
+            let message = "No se cumple con las casillass"
+            if(error != "content_invalid"){
+                message = error == "unchanged" ? "No se ha realizado ningun cambio en la tarea" : "Ocurrio un error. Porfavor reinicie la pagina";
+            }
             document.getElementById("addTask_buttonForm").style.animation = "tiembla 0.1s ease 0s 3"
             setTimeout(()=>{ document.getElementById("addTask_buttonForm").style.animation = "" },300)
             this.printMessage(message, ".errorMessage")
@@ -158,3 +181,4 @@ class managementData {
     
 
 }
+

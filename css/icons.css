@@ -17,9 +17,6 @@
 .icon_addTask i:nth-child(2){ transform: translate(-50%,-50%) rotate(90deg); }
 
 
-/* .select_icon_addTask{ } */
-
-
 /*---------------- SCROLL TASKS --------------------*/
 .tasks_container::-webkit-scrollbar{ width: 12px }
 .tasks_container::-webkit-scrollbar-track{ background-color: #2C3639; }

@@ -15,7 +15,7 @@
 
     <div class="tasks_container">
         <div class="tasks">
-            <!-- USAR addAdjacentElement (afterBegin) para colocar las tareas primero y luego que este el add -->
+            
             <!-- <div class="task" id="1">
                 <h3>Nombre</h3>
                 <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
@@ -60,10 +60,12 @@
                 <div class="inputContent">
                     <label for="title_input"><b>Titulo</b></label>
                     <input type="text" name="title" id="title_input">
+                    <p>El titulo debe contener entre 5 y 30 caracteres</p>
                 </div>
                 <div class="inputContent">
                     <label for="description_input"><b>Descripcion</b></label>
                     <textarea name="description" id="description_input" cols="30" rows="5"></textarea>
+                    <p>La descripcion debe contener entre 30 y 140 caracteres</p>
                 </div>
                 <input type="hidden" name="id" id="id_input" value="-1">
                 <input type="submit" value="AGREGAR" id="addTask_buttonForm">

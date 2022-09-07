@@ -1,10 +1,9 @@
-import { managementData, storage } from "./managementData.js"
+import { managementData, storage, styleValidateContentLength } from "./managementData.js"
 
 //Management DataBase
 let manage = new managementData()   // Gestor de LocalStorage 
 
 
-// APRENDIENDO A USAR LOCALSTORAGE
 storage.clear()   // Cleans Local Storage to avoid storage errors 
 storage.setItem("data", "[]")
 manage.resetScreen()
@@ -43,11 +42,33 @@ document.getElementById("addTask_buttonForm").addEventListener("click",e=>{
         return
     }
     // if id != -1 then the task will be modified
-        manage.modifyTask({
-            id: document.getElementById("id_input").value,
+    //if(manage.validateContentLength())  
+    manage.modifyTask({
+       id: document.getElementById("id_input").value,
             title: document.getElementById("title_input").value,
             description: document.getElementById("description_input").value
         })
+})
+
+document.querySelector(".form_modalWindow").addEventListener("keyup",e=>{
+    switch(e.target.getAttribute("id")){
+        case "title_input":
+             if(!manage.wordsValidation.title.test(e.target.value)){
+                 styleValidateContentLength(e.target.getAttribute("id"), false)
+                 return
+             }
+             styleValidateContentLength(e.target.getAttribute("id"), true)
+            
+        break;
+        case "description_input":
+            if(!manage.wordsValidation.description.test(e.target.value)){
+                styleValidateContentLength(e.target.getAttribute("id"), false)
+                return
+            }
+            styleValidateContentLength(e.target.getAttribute("id"), true)
+        break;
+    }
+
 })
 
 

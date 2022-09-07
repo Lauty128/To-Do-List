@@ -81,6 +81,7 @@ h1{ color: var(--color_two); text-align: center; }
 .form_modalWindow form{display: flex; flex-direction: column; gap: 20px }
 
 .inputContent label{ display: block; margin-bottom: 5px; }
+.inputContent p{ display: none; }
 .form_modalWindow form input, .form_modalWindow form textarea{ 
     outline:none; 
     resize: none; 
@@ -90,11 +91,12 @@ h1{ color: var(--color_two); text-align: center; }
 }
 #addTask_buttonForm{ width: 100%; cursor: pointer }
 
-/* .select_modalWindow{ transform: scale(1) } */
-
 .modalWindow_open{ display: flex }
 .form_modalWindow_open{ transform: scale(1); }
 
+.lengthIsNotMet label{ color: #d44865; }
+.lengthIsNotMet input, .lengthIsNotMet textarea{ border: 2px solid #d44865; }
+.lengthIsNotMet p{ color: #d44865; margin: 0; display: block; }
 
 /* ---------------------- ERROR MESSAGE --------------------------------- */
 .errorMessage, .successMessage{
